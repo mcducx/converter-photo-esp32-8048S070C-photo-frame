@@ -4,25 +4,25 @@ from PIL import Image
 import argparse
 
 # =============================================
-# НАСТРОЙКИ ПУТЕЙ (ИЗМЕНИТЕ ЗДЕСЬ ПОД СВОИ НУЖДЫ)
+# PATH SETTINGS (MODIFY HERE FOR YOUR NEEDS)
 # =============================================
 
-# Жёстко заданные пути (измените их на свои)
-INPUT_DIRECTORY = r"/Users/mcducx/Downloads/input"  # Папка с исходными изображениями
-OUTPUT_DIRECTORY = r"/Users/mcducx/Downloads/output"  # Папка для результатов
+# Hardcoded paths (change these to your own)
+INPUT_DIRECTORY = r"/Users/mcducx/Downloads/input"  # Folder with source images
+OUTPUT_DIRECTORY = r"/Users/mcducx/Downloads/output"  # Folder for results
 
 # =============================================
-# КОНСТАНТЫ ОБРАБОТКИ (можно менять)
+# PROCESSING CONSTANTS (can be modified)
 # =============================================
-TARGET_SIZE = (480, 800)  # Целевой размер (ширина, высота)
-JPEG_QUALITY = 95  # Качество JPEG (1-100)
-BACKGROUND_COLOR = (0, 0, 0)  # Цвет фона - ЧЁРНЫЙ (0, 0, 0)
+TARGET_SIZE = (480, 800)  # Target size (width, height)
+JPEG_QUALITY = 95  # JPEG quality (1-100)
+BACKGROUND_COLOR = (0, 0, 0)  # Background color - BLACK (0, 0, 0)
 
 # =============================================
-# ПОДДЕРЖКА ДОПОЛНИТЕЛЬНЫХ ФОРМАТОВ
+# ADDITIONAL FORMATS SUPPORT
 # =============================================
 
-# Поддержка HEIF/HEIC (форматы iPhone)
+# HEIF/HEIC support (iPhone formats)
 try:
     import pillow_heif
 
@@ -30,26 +30,26 @@ try:
     HAS_HEIF = True
 except ImportError:
     HAS_HEIF = False
-    print("ℹ️  Предупреждение: библиотека pillow-heif не установлена. HEIF/HEIC не будут поддерживаться.")
-    print("   Установите: pip install pillow-heif")
+    print("ℹ️  Warning: pillow-heif library is not installed. HEIF/HEIC will not be supported.")
+    print("   Install: pip install pillow-heif")
 except Exception as e:
     HAS_HEIF = False
-    print(f"⚠️  Предупреждение: не удалось инициализировать поддержку HEIF: {e}")
+    print(f"⚠️  Warning: Failed to initialize HEIF support: {e}")
 
-# Поддержка RAW файлов (CR2, NEF и др.)
+# RAW file support (CR2, NEF, etc.)
 try:
     import rawpy
 
     HAS_RAW = True
 except ImportError:
     HAS_RAW = False
-    print("ℹ️  Предупреждение: библиотека rawpy не установлена. RAW файлы (CR2, NEF и др.) не будут поддерживаться.")
-    print("   Установите: pip install rawpy")
-    print("   Дополнительно на Windows может потребоваться установить Microsoft Visual C++ Redistributable")
+    print("ℹ️  Warning: rawpy library is not installed. RAW files (CR2, NEF, etc.) will not be supported.")
+    print("   Install: pip install rawpy")
+    print("   Additionally on Windows you may need to install Microsoft Visual C++ Redistributable")
 
 
 def get_supported_formats():
-    """Возвращает список поддерживаемых форматов"""
+    """Returns a list of supported formats"""
     base_formats = ('.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.webp', '.gif')
     heif_formats = ()
     raw_formats = ()
@@ -64,68 +64,68 @@ def get_supported_formats():
 
 
 def process_raw_image(input_path):
-    """Обрабатывает RAW файл и возвращает PIL Image"""
+    """Processes a RAW file and returns a PIL Image"""
     try:
-        # Открываем RAW файл с rawpy
+        # Open RAW file with rawpy
         with rawpy.imread(input_path) as raw:
-            # Конвертируем RAW в RGB
+            # Convert RAW to RGB
             rgb = raw.postprocess(
-                use_camera_wb=True,  # Использовать баланс белого камеры
-                half_size=False,  # Полный размер
-                no_auto_bright=False,  # Автояркость
-                output_bps=8,  # 8 бит на канал
-                output_color=rawpy.ColorSpace.sRGB,  # Цветовое пространство sRGB
-                gamma=(2.222, 4.5),  # Стандартная гамма
-                user_black=None,  # Автоопределение чёрной точки
-                user_sat=None,  # Автонасыщенность
-                no_auto_scale=False,  # Автомасштабирование
-                demosaic_algorithm=rawpy.DemosaicAlgorithm.AHD  # Алгоритм демозаикинга
+                use_camera_wb=True,  # Use camera white balance
+                half_size=False,  # Full size
+                no_auto_bright=False,  # Auto brightness
+                output_bps=8,  # 8 bits per channel
+                output_color=rawpy.ColorSpace.sRGB,  # sRGB color space
+                gamma=(2.222, 4.5),  # Standard gamma
+                user_black=None,  # Auto black point
+                user_sat=None,  # Auto saturation
+                no_auto_scale=False,  # Auto scaling
+                demosaic_algorithm=rawpy.DemosaicAlgorithm.AHD  # Demosaicing algorithm
             )
 
-        # Конвертируем numpy array в PIL Image
+        # Convert numpy array to PIL Image
         img = Image.fromarray(rgb)
         return img
 
     except Exception as e:
-        print(f"❌ Ошибка при обработке RAW файла {os.path.basename(input_path)}: {e}")
+        print(f"❌ Error processing RAW file {os.path.basename(input_path)}: {e}")
         raise
 
 
 def check_directories():
-    """Проверяет существование папок и создаёт при необходимости"""
+    """Checks if directories exist and creates them if necessary"""
     if not os.path.exists(INPUT_DIRECTORY):
-        print(f"❌ ОШИБКА: Входная папка не существует!")
-        print(f"   Путь: {INPUT_DIRECTORY}")
-        print("\nВозможные решения:")
-        print("1. Создайте папку в указанном месте")
-        print("2. Измените путь в настройках скрипта (переменная INPUT_DIRECTORY)")
+        print(f"❌ ERROR: Input directory does not exist!")
+        print(f"   Path: {INPUT_DIRECTORY}")
+        print("\nPossible solutions:")
+        print("1. Create the folder at the specified location")
+        print("2. Change the path in the script settings (INPUT_DIRECTORY variable)")
         return False
 
-    # Создаём выходную папку если её нет
+    # Create output directory if it doesn't exist
     os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
-    print(f"✅ Входная папка: {INPUT_DIRECTORY}")
-    print(f"✅ Выходная папка: {OUTPUT_DIRECTORY}")
+    print(f"✅ Input directory: {INPUT_DIRECTORY}")
+    print(f"✅ Output directory: {OUTPUT_DIRECTORY}")
     return True
 
 
 def process_image(input_path, output_path, crop_mode=False):
-    """Обрабатывает одно изображение"""
+    """Processes a single image"""
     try:
-        # Определяем формат файла
+        # Determine file format
         _, ext = os.path.splitext(input_path)
         ext_lower = ext.lower()
 
-        # Обрабатываем RAW файлы отдельно
+        # Process RAW files separately
         if HAS_RAW and ext_lower in ('.cr2', '.cr3', '.nef', '.arw', '.dng', '.raf', '.orf', '.rw2'):
             img = process_raw_image(input_path)
         else:
-            # Открываем обычные форматы
+            # Open regular formats
             img = Image.open(input_path)
 
-        # Конвертируем в RGB (если CMYK, градации серого и т.д.)
+        # Convert to RGB (if CMYK, grayscale, etc.)
         if img.mode in ('RGBA', 'LA', 'P'):
-            # Создаем ЧЁРНЫЙ фон для прозрачных изображений
+            # Create BLACK background for transparent images
             rgb_img = Image.new('RGB', img.size, BACKGROUND_COLOR)
             if img.mode == 'P':
                 img = img.convert('RGBA')
@@ -135,11 +135,11 @@ def process_image(input_path, output_path, crop_mode=False):
             img = img.convert('RGB')
 
         if crop_mode:
-            # Режим обрезки (сохраняет центральную часть)
-            # Изменяем размер так, чтобы одна из сторон была не меньше нужной
+            # Crop mode (preserves central part)
+            # Resize so that one dimension is at least the target size
             img.thumbnail((TARGET_SIZE[0] * 2, TARGET_SIZE[1] * 2), Image.Resampling.LANCZOS)
 
-            # Обрезаем до центра
+            # Crop to center
             left = max(0, (img.width - TARGET_SIZE[0]) // 2)
             top = max(0, (img.height - TARGET_SIZE[1]) // 2)
             right = min(img.width, left + TARGET_SIZE[0])
@@ -147,59 +147,59 @@ def process_image(input_path, output_path, crop_mode=False):
 
             img = img.crop((left, top, right, bottom))
 
-            # Если изображение меньше целевого размера, увеличиваем
+            # If image is smaller than target size, upscale
             if img.size != TARGET_SIZE:
                 img = img.resize(TARGET_SIZE, Image.Resampling.LANCZOS)
 
             new_img = img
         else:
-            # Режим с добавлением ЧЁРНОГО фона (сохраняет пропорции)
+            # Mode with BLACK background addition (preserves proportions)
             img.thumbnail(TARGET_SIZE, Image.Resampling.LANCZOS)
 
-            # Создаем новое изображение нужного размера с ЧЁРНЫМ фоном
+            # Create new image of target size with BLACK background
             new_img = Image.new('RGB', TARGET_SIZE, BACKGROUND_COLOR)
 
-            # Вставляем изображение по центру
+            # Paste image in center
             offset = (
                 (TARGET_SIZE[0] - img.size[0]) // 2,
                 (TARGET_SIZE[1] - img.size[1]) // 2
             )
             new_img.paste(img, offset)
 
-        # Сохраняем в JPEG без progressive
+        # Save as JPEG without progressive
         new_img.save(output_path, 'JPEG', quality=JPEG_QUALITY, optimize=True, progressive=False)
 
         return True
 
     except Exception as e:
-        print(f"❌ Ошибка при обработке {os.path.basename(input_path)}: {e}")
+        print(f"❌ Error processing {os.path.basename(input_path)}: {e}")
         return False
 
 
 def process_directory(overwrite=False, crop_mode=False):
-    """Обрабатывает все изображения в директории"""
-    # Проверяем папки
+    """Processes all images in directory"""
+    # Check directories
     if not check_directories():
         return
 
-    # Получаем поддерживаемые форматы
+    # Get supported formats
     supported_formats = get_supported_formats()
 
-    print(f"\n📁 Анализ папок...")
-    print(f"   Поддерживаемые форматы: {', '.join(supported_formats)}")
+    print(f"\n📁 Analyzing directories...")
+    print(f"   Supported formats: {', '.join(supported_formats)}")
 
-    # Выводим информацию о поддерживаемых форматах
+    # Display information about supported formats
     if HAS_HEIF:
-        print(f"   ✅ HEIF/HEIC: ПОДДЕРЖИВАЕТСЯ")
+        print(f"   ✅ HEIF/HEIC: SUPPORTED")
     else:
-        print(f"   ⚠️  HEIF/HEIC: НЕ ПОДДЕРЖИВАЕТСЯ (установите pillow-heif)")
+        print(f"   ⚠️  HEIF/HEIC: NOT SUPPORTED (install pillow-heif)")
 
     if HAS_RAW:
-        print(f"   ✅ RAW файлы (CR2, NEF и др.): ПОДДЕРЖИВАЕТСЯ")
+        print(f"   ✅ RAW files (CR2, NEF, etc.): SUPPORTED")
     else:
-        print(f"   ⚠️  RAW файлы: НЕ ПОДДЕРЖИВАЕТСЯ (установите rawpy)")
+        print(f"   ⚠️  RAW files: NOT SUPPORTED (install rawpy)")
 
-    # Получаем список файлов
+    # Get list of files
     files = os.listdir(INPUT_DIRECTORY)
     image_files = []
 
@@ -209,142 +209,142 @@ def process_directory(overwrite=False, crop_mode=False):
             image_files.append(filename)
 
     if not image_files:
-        print(f"\n⚠️  В папке {INPUT_DIRECTORY} не найдено поддерживаемых изображений!")
+        print(f"\n⚠️  No supported images found in folder {INPUT_DIRECTORY}!")
         return
 
-    print(f"\n📊 Найдено изображений: {len(image_files)}")
-    print(f"   Целевой размер: {TARGET_SIZE[0]}×{TARGET_SIZE[1]} пикселей")
-    print(f"   Цвет фона: ЧЁРНЫЙ (RGB{BACKGROUND_COLOR})")
-    print(f"   Режим: {'Обрезка' if crop_mode else 'С добавлением ЧЁРНОГО фона'}")
+    print(f"\n📊 Images found: {len(image_files)}")
+    print(f"   Target size: {TARGET_SIZE[0]}×{TARGET_SIZE[1]} pixels")
+    print(f"   Background color: BLACK (RGB{BACKGROUND_COLOR})")
+    print(f"   Mode: {'Crop' if crop_mode else 'With BLACK background'}")
     print("-" * 60)
 
-    # Счетчики
+    # Counters
     processed = 0
     skipped = 0
     failed = 0
 
-    # Обрабатываем изображения
+    # Process images
     for i, filename in enumerate(image_files, 1):
         input_path = os.path.join(INPUT_DIRECTORY, filename)
 
-        # Создаем имя выходного файла
+        # Create output filename
         name_without_ext = os.path.splitext(filename)[0]
         output_filename = f"{name_without_ext}.jpg"
         output_path = os.path.join(OUTPUT_DIRECTORY, output_filename)
 
-        # Проверяем, существует ли уже файл
+        # Check if file already exists
         if os.path.exists(output_path) and not overwrite:
-            print(f"⏭️  [{i}/{len(image_files)}] Пропущено (уже существует): {filename}")
+            print(f"⏭️  [{i}/{len(image_files)}] Skipped (already exists): {filename}")
             skipped += 1
             continue
 
-        # Обрабатываем изображение
+        # Process image
         if process_image(input_path, output_path, crop_mode):
             processed += 1
-            print(f"✅ [{i}/{len(image_files)}] Обработано: {filename}")
+            print(f"✅ [{i}/{len(image_files)}] Processed: {filename}")
         else:
             failed += 1
-            print(f"❌ [{i}/{len(image_files)}] Ошибка: {filename}")
+            print(f"❌ [{i}/{len(image_files)}] Error: {filename}")
 
-    # Итог
+    # Summary
     print("\n" + "=" * 60)
-    print("📊 РЕЗУЛЬТАТЫ ОБРАБОТКИ:")
+    print("📊 PROCESSING RESULTS:")
     print("=" * 60)
-    print(f"✅ Успешно обработано: {processed}")
-    print(f"⏭️  Пропущено (уже существуют): {skipped}")
-    print(f"❌ Не удалось обработать: {failed}")
-    print(f"📂 Выходная папка: {OUTPUT_DIRECTORY}")
+    print(f"✅ Successfully processed: {processed}")
+    print(f"⏭️  Skipped (already exist): {skipped}")
+    print(f"❌ Failed to process: {failed}")
+    print(f"📂 Output directory: {OUTPUT_DIRECTORY}")
 
     if processed > 0:
-        print("\n🎉 Обработка завершена успешно!")
-        print(f"Все изображения теперь имеют ЧЁРНЫЙ фон")
+        print("\n🎉 Processing completed successfully!")
+        print(f"All images now have BLACK background")
     else:
-        print("\nℹ️  Ничего не обработано. Проверьте настройки путей.")
+        print("\nℹ️  Nothing processed. Check path settings.")
 
 
 def show_settings():
-    """Показывает текущие настройки"""
+    """Displays current settings"""
     print("\n" + "=" * 60)
-    print("⚙️  ТЕКУЩИЕ НАСТРОЙКИ:")
+    print("⚙️  CURRENT SETTINGS:")
     print("=" * 60)
-    print(f"Входная папка: {INPUT_DIRECTORY}")
-    print(f"Выходная папка: {OUTPUT_DIRECTORY}")
-    print(f"Целевой размер: {TARGET_SIZE[0]}×{TARGET_SIZE[1]}")
-    print(f"Качество JPEG: {JPEG_QUALITY}%")
-    print(f"Цвет фона: ЧЁРНЫЙ (RGB{BACKGROUND_COLOR})")
-    print(f"Поддержка HEIF: {'✅' if HAS_HEIF else '❌ (установите pillow-heif)'}")
-    print(f"Поддержка RAW: {'✅' if HAS_RAW else '❌ (установите rawpy)'}")
+    print(f"Input directory: {INPUT_DIRECTORY}")
+    print(f"Output directory: {OUTPUT_DIRECTORY}")
+    print(f"Target size: {TARGET_SIZE[0]}×{TARGET_SIZE[1]}")
+    print(f"JPEG quality: {JPEG_QUALITY}%")
+    print(f"Background color: BLACK (RGB{BACKGROUND_COLOR})")
+    print(f"HEIF support: {'✅' if HAS_HEIF else '❌ (install pillow-heif)'}")
+    print(f"RAW support: {'✅' if HAS_RAW else '❌ (install rawpy)'}")
     print("=" * 60)
 
 
 def main():
-    """Основная функция"""
+    """Main function"""
     parser = argparse.ArgumentParser(
-        description='Конвертер изображений в формат 800×480 JPEG с ЧЁРНЫМ фоном',
+        description='Image converter to 800×480 JPEG format with BLACK background',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=f'''
-Примеры использования:
-  %(prog)s                    # Обычная обработка с ЧЁРНЫМ фоном
-  %(prog)s --overwrite        # Перезаписать существующие файлы
-  %(prog)s --crop             # Режим обрезки (без добавления фона)
-  %(prog)s --settings         # Показать настройки и выйти
-  %(prog)s --overwrite --crop # Перезаписать в режиме обрезки
+Usage examples:
+  %(prog)s                    # Normal processing with BLACK background
+  %(prog)s --overwrite        # Overwrite existing files
+  %(prog)s --crop             # Crop mode (without adding background)
+  %(prog)s --settings         # Show settings and exit
+  %(prog)s --overwrite --crop # Overwrite in crop mode
 
-Поддерживаемые RAW форматы:
+Supported RAW formats:
   CR2, CR3 (Canon), NEF (Nikon), ARW (Sony), DNG (Adobe), 
   RAF (Fujifilm), ORF (Olympus), RW2 (Panasonic)
 
-Требуемые библиотеки:
-  • pillow-heif для HEIF/HEIC
-  • rawpy для RAW файлов
+Required libraries:
+  • pillow-heif for HEIF/HEIC
+  • rawpy for RAW files
 
-Примечание: По умолчанию используется ЧЁРНЫЙ фон (0, 0, 0)
+Note: BLACK background (0, 0, 0) is used by default
         '''
     )
 
     parser.add_argument('--overwrite', '-o', action='store_true',
-                        help='Перезаписать существующие файлы')
+                        help='Overwrite existing files')
     parser.add_argument('--crop', '-c', action='store_true',
-                        help='Режим обрезки (по умолчанию - с добавлением ЧЁРНОГО фона)')
+                        help='Crop mode (default - with BLACK background)')
     parser.add_argument('--settings', '-s', action='store_true',
-                        help='Показать текущие настройки и выйти')
+                        help='Show current settings and exit')
 
     args = parser.parse_args()
 
-    print("🖼️  Конвертер изображений v3.0")
-    print("🎨 Цвет фона: ЧЁРНЫЙ")
-    print("📸 Поддержка: CR2, NEF, ARW и др. RAW форматы")
+    print("🖼️  Image Converter v3.0")
+    print("🎨 Background color: BLACK")
+    print("📸 Support: CR2, NEF, ARW and other RAW formats")
     print("=" * 60)
 
     if args.settings:
         show_settings()
         return
 
-    print("Перед началом проверьте настройки путей в скрипте:")
-    print(f"  Входная папка: {INPUT_DIRECTORY}")
-    print(f"  Выходная папка: {OUTPUT_DIRECTORY}")
+    print("Before starting, check path settings in the script:")
+    print(f"  Input directory: {INPUT_DIRECTORY}")
+    print(f"  Output directory: {OUTPUT_DIRECTORY}")
 
-    # Проверяем существование входной папки
+    # Check if input directory exists
     if not os.path.exists(INPUT_DIRECTORY):
-        print(f"\n❌ ОШИБКА: Входная папка не существует!")
-        print(f"   Путь: {INPUT_DIRECTORY}")
-        print("\nИзмените путь в настройках скрипта:")
-        print("1. Откройте файл скрипта в текстовом редакторе")
-        print("2. Найдите строки с INPUT_DIRECTORY и OUTPUT_DIRECTORY")
-        print("3. Укажите правильные пути к вашим папкам")
-        input("\nНажмите Enter для выхода...")
+        print(f"\n❌ ERROR: Input directory does not exist!")
+        print(f"   Path: {INPUT_DIRECTORY}")
+        print("\nChange the path in script settings:")
+        print("1. Open the script file in a text editor")
+        print("2. Find lines with INPUT_DIRECTORY and OUTPUT_DIRECTORY")
+        print("3. Specify correct paths to your folders")
+        input("\nPress Enter to exit...")
         return
 
-    # Предупреждение о перезаписи
+    # Overwrite warning
     if args.overwrite:
-        print("\n⚠️  ВКЛЮЧЁН РЕЖИМ ПЕРЕЗАПИСИ! Существующие файлы будут перезаписаны.")
+        print("\n⚠️  OVERWRITE MODE ENABLED! Existing files will be overwritten.")
 
     if args.crop:
-        print("\nℹ️  Режим: ОБРЕЗКА (изображения будут обрезаны до 800×480)")
+        print("\nℹ️  Mode: CROP (images will be cropped to 800×480)")
     else:
-        print(f"\nℹ️  Режим: С ЧЁРНЫМ ФОНОМ (изображения сохранят пропорции на чёрном фоне)")
+        print(f"\nℹ️  Mode: WITH BLACK BACKGROUND (images will preserve proportions on black background)")
 
-    # Запускаем обработку
+    # Start processing
     process_directory(args.overwrite, args.crop)
 
 
@@ -352,9 +352,9 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\n\n⏹️  Прервано пользователем")
+        print("\n\n⏹️  Interrupted by user")
     except Exception as e:
-        print(f"\n❌ Критическая ошибка: {e}")
-        print("Проверьте настройки и попробуйте снова.")
+        print(f"\n❌ Critical error: {e}")
+        print("Check settings and try again.")
 
-    input("\nНажмите Enter для выхода...")
+    input("\nPress Enter to exit...")
