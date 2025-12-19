@@ -1,225 +1,223 @@
-# Image Converter for Digital Photo Farme
+# Image Converter Pro
 
-A universal image converter for preparing content for 800×480 pixel displays.
+A powerful Python-based image conversion tool with a modern GUI interface, designed to convert various image formats to standardized JPEG images with customizable backgrounds or cropping options.
 
-## 📋 Description
+## 🌟 Features
 
-The script automatically processes photos of various formats and converts them to a unified standard:
-- **Size:** 480×800 pixels
-- **Format:** RGB JPEG (non-progressive)
-- **Background:** Black (for images with different aspect ratios)
-- **Support:** All popular formats, including RAW and HEIC
+- **Multiple Format Support**: Convert JPG, PNG, BMP, TIFF, WEBP, GIF, HEIF/HEIC (iPhone), and RAW formats (CR2, NEF, ARW, DNG, etc.)
+- **Flexible Processing Modes**:
+  - Fit with background (adds black/white/custom color padding)
+  - Crop to fit (intelligently crops to target dimensions)
+- **Customizable Settings**:
+  - Adjustable target resolution (default: 800×480)
+  - Configurable JPEG quality (1-100%)
+  - Custom background colors
+  - Overwrite existing files option
+- **Modern GUI Interface**: Dark theme with real-time progress tracking
+- **Batch Processing**: Convert entire folders of images at once
+- **Threaded Processing**: Non-blocking UI during conversion
+- **Preview Function**: Check image details before processing
+- **Comprehensive Logging**: Detailed processing log with timestamps
 
-## ✨ Features
+## 📋 Prerequisites
 
-- **Automatic processing** of multiple images
-- **RAW file support** (CR2, NEF, ARW, etc.)
-- **HEIF/HEIC support** (iPhone formats)
-- **Two processing modes:** with black background or cropping
-- **Intelligent scaling** with aspect ratio preservation
-- **Overwrite protection** (optional)
-- **Detailed log** of the processing
+### Required Dependencies
+- Python 3.7+
+- Pillow (PIL Fork)
+- PyQt5
+
+### Optional Dependencies for Extended Format Support
+- `pillow_heif` - for HEIF/HEIC (iPhone) support
+- `rawpy` - for RAW camera format support (CR2, NEF, ARW, etc.)
+
+## 🔧 Installation
+
+1. **Clone or download the repository**
+```bash
+git clone <repository-url>
+cd image-converter-pro
+```
+
+2. **Install required packages**
+```bash
+pip install PyQt5 Pillow
+```
+
+3. **Install optional packages for extended format support**
+```bash
+# For HEIF/HEIC (iPhone) support
+pip install pillow-heif
+
+# For RAW camera format support
+pip install rawpy
+```
+
+## 🚀 Usage
+
+### GUI Mode (Recommended)
+1. Run the application:
+```bash
+python image_converter.py
+```
+
+2. **Configure your conversion:**
+   - Select input directory containing source images
+   - Select output directory for converted JPEGs
+   - Choose processing mode:
+     - **Fit with background**: Resizes image to fit within target dimensions while maintaining aspect ratio, adding background color
+     - **Crop to fit**: Crops image to exactly match target dimensions
+   - Adjust settings via "Settings ⚙️" button if needed
+   - Click "▶ Start Processing"
+
+### CLI Mode (Deprecated)
+```bash
+# Basic usage (opens GUI)
+python image_converter.py
+
+# Legacy CLI options (deprecated)
+python image_converter.py --overwrite
+python image_converter.py --crop
+```
 
 ## 📁 Supported Formats
 
-### Common formats:
-- JPEG/JPG, PNG, BMP, TIFF/TIF
-- WebP, GIF
+### Base Formats (always supported)
+- `.jpg`, `.jpeg`
+- `.png`
+- `.bmp`
+- `.tiff`, `.tif`
+- `.webp`
+- `.gif`
 
-### Special formats:
-- **HEIF/HEIC** (requires `pillow-heif`)
-- **RAW files:**
-  - Canon: `.cr2`, `.cr3`
-  - Nikon: `.nef`
-  - Sony: `.arw`
-  - Adobe: `.dng`
-  - Fujifilm: `.raf`
-  - Olympus: `.orf`
-  - Panasonic: `.rw2`
+### With Optional Dependencies
 
-## 🚀 Quick Start
+**HEIF/HEIC Support** (requires `pillow_heif`):
+- `.heif`, `.heic`, `.hif`
 
-### 1. Install Python
-Requires Python 3.7 or higher. Download from [official website](https://python.org).
-
-### 2. Install dependencies:
-```bash
-pip install Pillow pillow-heif rawpy
-```
-
-### 3. Configure paths:
-Open `converter.py` and modify the paths at the beginning of the file:
-
-```python
-INPUT_DIRECTORY = r"C:\Path\To\Your\Photos"
-OUTPUT_DIRECTORY = r"C:\Path\For\Results"
-```
-
-### 4. Start conversion:
-```bash
-python converter.py
-```
+**RAW Camera Format Support** (requires `rawpy`):
+- `.cr2`, `.cr3` (Canon)
+- `.nef` (Nikon)
+- `.arw` (Sony)
+- `.dng` (Adobe Digital Negative)
+- `.raf` (Fujifilm)
+- `.orf` (Olympus)
+- `.rw2` (Panasonic)
 
 ## ⚙️ Configuration
 
-### Configuration parameters (at the beginning of converter.py):
+Access settings via the "Settings ⚙️" button:
 
-```python
-# Final image size
-TARGET_SIZE = (800, 480)
+1. **Target Size**: Set output image dimensions (default: 800×480)
+2. **JPEG Quality**: Adjust compression quality (1-100%, default: 95%)
+3. **Background Color**: Choose from Black, White, Gray, or Custom color
+4. **Default Mode**: Set preferred processing mode
+5. **Format Support Status**: Shows which optional formats are available
 
-# JPEG quality (1-100)
-JPEG_QUALITY = 95
+## 📊 Output
 
-# Background color (RGB)
-BACKGROUND_COLOR = (0, 0, 0)  # Black
+All images are converted to JPEG format with the following characteristics:
+- Standardized dimensions (configurable, default 800×480)
+- RGB color space
+- Configurable JPEG quality
+- Progressive encoding disabled for compatibility
+- Optimized for size/quality balance
+
+## 🖥️ Preview
+
+The application includes a preview function that shows:
+- Original image dimensions
+- File format
+- Color mode
+- Target conversion size
+
+## 🔄 Processing Details
+
+### Fit with Background Mode
+1. Image is resized (maintaining aspect ratio) to fit within target dimensions
+2. Padding is added to reach exact target size
+3. Padding color is configurable (default: black)
+
+### Crop to Fit Mode
+1. Image is resized (maintaining aspect ratio) to cover target dimensions
+2. Center portion is cropped to exact target size
+3. Uses LANCZOS resampling for high-quality results
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **"No supported images found"**
+   - Check that input directory contains supported formats
+   - Install optional dependencies for HEIF/RAW support if needed
+
+2. **RAW files not processing**
+   - Install `rawpy`: `pip install rawpy`
+   - Some RAW formats may require additional system libraries
+
+3. **HEIF/HEIC files not processing**
+   - Install `pillow_heif`: `pip install pillow-heif`
+
+4. **Memory errors with large images**
+   - Reduce JPEG quality setting
+   - Process fewer images at once
+
+5. **Application freezes during processing**
+   - Processing is done in background thread; UI should remain responsive
+   - Check system resources
+
+## 📝 Development
+
+### Project Structure
+```
+image-converter-pro/
+├── image_converter.py    # Main application file
+├── README.md            # This documentation
+└── requirements.txt     # Python dependencies
 ```
 
-### System dependencies (optional):
+### Key Components
+- `ImageConverterUI`: Main GUI window class
+- `ImageProcessor`: Background processing thread
+- `SettingsDialog`: Configuration dialog
+- `get_supported_formats()`: Dynamic format detection
 
-**Windows:** Install [Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) for RAW support.
+### Extending Support
+To add support for additional formats:
+1. Add format extension to `get_supported_formats()` function
+2. Implement processing logic in `process_image()` or add specialized handler
+3. Update documentation
 
-**Ubuntu/Debian:**
-```bash
-sudo apt-get install libheif-dev libraw-dev
-```
+## 📄 License
 
-**macOS:**
-```bash
-brew install libheif libraw
-```
+This project is provided as-is. Users are free to modify and distribute according to their needs.
 
-## 🎯 Usage
+## 👥 Author
 
-### Basic commands:
+Created for efficient batch image processing with a focus on format compatibility and ease of use.
 
-```bash
-# Standard processing (skips already processed)
-python converter.py
+## 🔗 Dependencies
 
-# Overwrite existing files
-python converter.py --overwrite
+- **PyQt5**: GUI framework
+- **Pillow**: Image processing
+- **pillow_heif** (optional): HEIF/HEIC support
+- **rawpy** (optional): RAW format support
 
-# Crop mode (instead of adding background)
-python converter.py --crop
+## 🤝 Contributing
 
-# Combined mode: crop with overwrite
-python converter.py --overwrite --crop
-
-# Show current settings
-python converter.py --settings
-```
-
-### Command line parameters:
-| Parameter | Short version | Description |
-|----------|----------------|----------|
-| `--overwrite` | `-o` | Overwrite existing files |
-| `--crop` | `-c` | Crop mode instead of adding background |
-| `--settings` | `-s` | Show settings and exit |
-
-## 🔧 How It Works
-
-### Default mode (with black background):
-1. Image is opened and converted to RGB
-2. Aspect ratio is preserved, image is fitted into 800×480
-3. Black background is added around the image
-4. Saved as JPEG with 95% quality
-
-### Crop mode (`--crop`):
-1. Image is scaled so that one side is at least the target size
-2. Central 800×480 part is cropped
-3. Saved as JPEG
-
-### RAW file processing:
-- Uses AHD demosaicing algorithm
-- Applies camera white balance
-- Converts to sRGB color space
-- 8 bits per channel (JPEG standard)
-
-## 📊 Example Output
-
-```
-🖼️  Image Converter v3.0
-🎨 Background color: BLACK
-📸 Support: CR2, NEF, ARW and other RAW formats
-============================================================
-✅ Input folder: C:\Photos\Source
-✅ Output folder: C:\Photos\Processed
-
-📁 Analyzing folders...
-   Supported formats: .jpg, .jpeg, .png, .bmp, .tiff, .tif, .webp, .gif, .heif, .heic, .hif, .cr2, .cr3, .nef, .arw, .dng, .raf, .orf, .rw2
-   ✅ HEIF/HEIC: SUPPORTED
-   ✅ RAW files (CR2, NEF, etc.): SUPPORTED
-
-📊 Found images: 15
-   Target size: 800×480 pixels
-   Background color: BLACK (RGB(0, 0, 0))
-   Mode: With BLACK background
-------------------------------------------------------------
-✅ [1/15] Processed: photo1.jpg
-✅ [2/15] Processed: image.heic
-✅ [3/15] Processed: raw_image.cr2
-⏭️  [4/15] Skipped (already exists): photo2.jpg
-...
-```
-
-## 📁 Project Structure
-
-```
-image-converter/
-├── converter.py          # Main script
-├── README.md            # Documentation
-```
-
-## ❓ Frequently Asked Questions
-
-### Q: How to change the background color?
-**A:** Change the `BACKGROUND_COLOR` value in the script settings. For example:
-- White: `(255, 255, 255)`
-- Red: `(255, 0, 0)`
-- Blue: `(0, 0, 255)`
-
-### Q: Why aren't RAW files being processed?
-**A:** Make sure:
-1. All dependencies are installed (`pip install rawpy`)
-2. Visual C++ Redistributable is installed on Windows
-3. Files are not corrupted
-
-### Q: Are EXIF data preserved?
-**A:** No, EXIF data is not preserved to reduce file size and standardize output.
-
-### Q: Can I change the output image size?
-**A:** Yes, change the `TARGET_SIZE` value in the script settings.
-
-### Q: How to process subfolders?
-**A:** Current version only processes files in the specified folder. For recursive processing, script modification is required.
-
-## 🐛 Debugging
-
-### Installation check:
-```bash
-python converter.py --settings
-```
-
-### Test run:
-```bash
-# Create a test folder with several images
-mkdir test_input
-cp some_images.jpg test_input/
-
-# Run conversion
-python converter.py
-```
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## 📞 Support
 
-If you encounter problems:
-1. Check if all dependencies are installed
-2. Verify folder paths are correct
-3. Enable `--settings` mode to check configuration
+For issues or questions:
+1. Check the Troubleshooting section above
+2. Ensure all dependencies are properly installed
+3. Verify input images are in supported formats
+4. Check application logs for detailed error messages
 
 ---
 
-**Version:** 3.0  
-**Last update:** 2024  
-**Python support:** 3.7+
+**Note**: The CLI interface is deprecated in favor of the more user-friendly GUI interface. Future development will focus on the GUI features.
