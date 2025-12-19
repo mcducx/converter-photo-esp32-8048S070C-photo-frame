@@ -1,34 +1,34 @@
-# Image Converter for Digital Signage
+# Image Converter for Digital Photo Farme
 
-Универсальный конвертер изображений для подготовки контента на дисплеи с разрешением 800×480 пикселей.
+A universal image converter for preparing content for 800×480 pixel displays.
 
-## 📋 Описание
+## 📋 Description
 
-Скрипт автоматически обрабатывает фотографии различных форматов и приводит их к единому стандарту:
-- **Размер:** 480×800 пикселей
-- **Формат:** RGB JPEG (не progressive)
-- **Фон:** Чёрный (для изображений с другими пропорциями)
-- **Поддержка:** Все популярные форматы, включая RAW и HEIC
+The script automatically processes photos of various formats and converts them to a unified standard:
+- **Size:** 480×800 pixels
+- **Format:** RGB JPEG (non-progressive)
+- **Background:** Black (for images with different aspect ratios)
+- **Support:** All popular formats, including RAW and HEIC
 
-## ✨ Особенности
+## ✨ Features
 
-- **Автоматическая обработка** множества изображений
-- **Поддержка RAW-файлов** (CR2, NEF, ARW и др.)
-- **Работа с HEIF/HEIC** (форматы iPhone)
-- **Два режима обработки:** с чёрным фоном или обрезкой
-- **Интеллектуальное масштабирование** с сохранением пропорций
-- **Защита от перезаписи** (опционально)
-- **Подробный лог** процесса обработки
+- **Automatic processing** of multiple images
+- **RAW file support** (CR2, NEF, ARW, etc.)
+- **HEIF/HEIC support** (iPhone formats)
+- **Two processing modes:** with black background or cropping
+- **Intelligent scaling** with aspect ratio preservation
+- **Overwrite protection** (optional)
+- **Detailed log** of the processing
 
-## 📁 Поддерживаемые форматы
+## 📁 Supported Formats
 
-### Обычные форматы:
+### Common formats:
 - JPEG/JPG, PNG, BMP, TIFF/TIF
 - WebP, GIF
 
-### Специальные форматы:
-- **HEIF/HEIC** (требует `pillow-heif`)
-- **RAW-файлы:**
+### Special formats:
+- **HEIF/HEIC** (requires `pillow-heif`)
+- **RAW files:**
   - Canon: `.cr2`, `.cr3`
   - Nikon: `.nef`
   - Sony: `.arw`
@@ -37,47 +37,47 @@
   - Olympus: `.orf`
   - Panasonic: `.rw2`
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### 1. Установите Python
-Требуется Python 3.7 или выше. Скачайте с [официального сайта](https://python.org).
+### 1. Install Python
+Requires Python 3.7 or higher. Download from [official website](https://python.org).
 
-### 2. Установите зависимости:
+### 2. Install dependencies:
 ```bash
 pip install Pillow pillow-heif rawpy
 ```
 
-### 3. Настройте пути:
-Откройте `converter.py` и измените пути в начале файла:
+### 3. Configure paths:
+Open `converter.py` and modify the paths at the beginning of the file:
 
 ```python
-INPUT_DIRECTORY = r"C:\Путь\К\Вашим\Фотографиям"
-OUTPUT_DIRECTORY = r"C:\Путь\Для\Результатов"
+INPUT_DIRECTORY = r"C:\Path\To\Your\Photos"
+OUTPUT_DIRECTORY = r"C:\Path\For\Results"
 ```
 
-### 4. Запустите конвертацию:
+### 4. Start conversion:
 ```bash
 python converter.py
 ```
 
-## ⚙️ Настройка
+## ⚙️ Configuration
 
-### Конфигурационные параметры (в начале converter.py):
+### Configuration parameters (at the beginning of converter.py):
 
 ```python
-# Размер итоговых изображений
+# Final image size
 TARGET_SIZE = (800, 480)
 
-# Качество JPEG (1-100)
+# JPEG quality (1-100)
 JPEG_QUALITY = 95
 
-# Цвет фона (RGB)
-BACKGROUND_COLOR = (0, 0, 0)  # Чёрный
+# Background color (RGB)
+BACKGROUND_COLOR = (0, 0, 0)  # Black
 ```
 
-### Системные зависимости (опционально):
+### System dependencies (optional):
 
-**Windows:** Установите [Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) для поддержки RAW.
+**Windows:** Install [Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) for RAW support.
 
 **Ubuntu/Debian:**
 ```bash
@@ -89,138 +89,137 @@ sudo apt-get install libheif-dev libraw-dev
 brew install libheif libraw
 ```
 
-## 🎯 Использование
+## 🎯 Usage
 
-### Базовые команды:
+### Basic commands:
 
 ```bash
-# Стандартная обработка (пропускает уже обработанные)
+# Standard processing (skips already processed)
 python converter.py
 
-# С перезаписью существующих файлов
+# Overwrite existing files
 python converter.py --overwrite
 
-# Режим обрезки (вместо добавления фона)
+# Crop mode (instead of adding background)
 python converter.py --crop
 
-# Комбинированный режим: обрезка с перезаписью
+# Combined mode: crop with overwrite
 python converter.py --overwrite --crop
 
-# Показать текущие настройки
+# Show current settings
 python converter.py --settings
 ```
 
-### Параметры командной строки:
-| Параметр | Короткая версия | Описание |
+### Command line parameters:
+| Parameter | Short version | Description |
 |----------|----------------|----------|
-| `--overwrite` | `-o` | Перезаписать существующие файлы |
-| `--crop` | `-c` | Режим обрезки вместо добавления фона |
-| `--settings` | `-s` | Показать настройки и выйти |
+| `--overwrite` | `-o` | Overwrite existing files |
+| `--crop` | `-c` | Crop mode instead of adding background |
+| `--settings` | `-s` | Show settings and exit |
 
-## 🔧 Как это работает
+## 🔧 How It Works
 
-### Режим по умолчанию (с чёрным фоном):
-1. Изображение открывается и конвертируется в RGB
-2. Сохраняются пропорции, изображение вписывается в 800×480
-3. Добавляется чёрный фон вокруг изображения
-4. Сохраняется как JPEG с качеством 95%
+### Default mode (with black background):
+1. Image is opened and converted to RGB
+2. Aspect ratio is preserved, image is fitted into 800×480
+3. Black background is added around the image
+4. Saved as JPEG with 95% quality
 
-### Режим обрезки (`--crop`):
-1. Изображение масштабируется так, чтобы одна из сторон была не меньше целевой
-2. Центральная часть 800×480 обрезается
-3. Сохраняется как JPEG
+### Crop mode (`--crop`):
+1. Image is scaled so that one side is at least the target size
+2. Central 800×480 part is cropped
+3. Saved as JPEG
 
-### Обработка RAW-файлов:
-- Используется алгоритм демозаикинга AHD
-- Применяется баланс белого камеры
-- Конвертация в цветовое пространство sRGB
-- 8 бит на канал (стандарт для JPEG)
+### RAW file processing:
+- Uses AHD demosaicing algorithm
+- Applies camera white balance
+- Converts to sRGB color space
+- 8 bits per channel (JPEG standard)
 
-## 📊 Пример вывода
+## 📊 Example Output
 
 ```
-🖼️  Конвертер изображений v3.0
-🎨 Цвет фона: ЧЁРНЫЙ
-📸 Поддержка: CR2, NEF, ARW и др. RAW форматы
+🖼️  Image Converter v3.0
+🎨 Background color: BLACK
+📸 Support: CR2, NEF, ARW and other RAW formats
 ============================================================
-✅ Входная папка: C:\Фото\Исходные
-✅ Выходная папка: C:\Фото\Обработанные
+✅ Input folder: C:\Photos\Source
+✅ Output folder: C:\Photos\Processed
 
-📁 Анализ папок...
-   Поддерживаемые форматы: .jpg, .jpeg, .png, .bmp, .tiff, .tif, .webp, .gif, .heif, .heic, .hif, .cr2, .cr3, .nef, .arw, .dng, .raf, .orf, .rw2
-   ✅ HEIF/HEIC: ПОДДЕРЖИВАЕТСЯ
-   ✅ RAW файлы (CR2, NEF и др.): ПОДДЕРЖИВАЕТСЯ
+📁 Analyzing folders...
+   Supported formats: .jpg, .jpeg, .png, .bmp, .tiff, .tif, .webp, .gif, .heif, .heic, .hif, .cr2, .cr3, .nef, .arw, .dng, .raf, .orf, .rw2
+   ✅ HEIF/HEIC: SUPPORTED
+   ✅ RAW files (CR2, NEF, etc.): SUPPORTED
 
-📊 Найдено изображений: 15
-   Целевой размер: 800×480 пикселей
-   Цвет фона: ЧЁРНЫЙ (RGB(0, 0, 0))
-   Режим: С добавлением ЧЁРНОГО фона
+📊 Found images: 15
+   Target size: 800×480 pixels
+   Background color: BLACK (RGB(0, 0, 0))
+   Mode: With BLACK background
 ------------------------------------------------------------
-✅ [1/15] Обработано: photo1.jpg
-✅ [2/15] Обработано: image.heic
-✅ [3/15] Обработано: raw_image.cr2
-⏭️  [4/15] Пропущено (уже существует): photo2.jpg
+✅ [1/15] Processed: photo1.jpg
+✅ [2/15] Processed: image.heic
+✅ [3/15] Processed: raw_image.cr2
+⏭️  [4/15] Skipped (already exists): photo2.jpg
 ...
 ```
 
-## 📁 Структура проекта
+## 📁 Project Structure
 
 ```
 image-converter/
-├── converter.py          # Основной скрипт
-├── README.md            # Документация
+├── converter.py          # Main script
+├── README.md            # Documentation
 ```
 
-## ❓ Частые вопросы
+## ❓ Frequently Asked Questions
 
-### Q: Как изменить цвет фона на другой?
-**A:** Измените значение `BACKGROUND_COLOR` в настройках скрипта. Например:
-- Белый: `(255, 255, 255)`
-- Красный: `(255, 0, 0)`
-- Синий: `(0, 0, 255)`
+### Q: How to change the background color?
+**A:** Change the `BACKGROUND_COLOR` value in the script settings. For example:
+- White: `(255, 255, 255)`
+- Red: `(255, 0, 0)`
+- Blue: `(0, 0, 255)`
 
-### Q: Почему не обрабатываются RAW файлы?
-**A:** Убедитесь, что:
-1. Установлены все зависимости (`pip install rawpy`)
-2. На Windows установлен Visual C++ Redistributable
-3. Файлы не повреждены
+### Q: Why aren't RAW files being processed?
+**A:** Make sure:
+1. All dependencies are installed (`pip install rawpy`)
+2. Visual C++ Redistributable is installed on Windows
+3. Files are not corrupted
 
-### Q: Сохраняются ли EXIF-данные?
-**A:** Нет, EXIF-данные не сохраняются для уменьшения размера файлов и стандартизации вывода.
+### Q: Are EXIF data preserved?
+**A:** No, EXIF data is not preserved to reduce file size and standardize output.
 
-### Q: Можно ли изменить размер выходных изображений?
-**A:** Да, измените значение `TARGET_SIZE` в настройках скрипта.
+### Q: Can I change the output image size?
+**A:** Yes, change the `TARGET_SIZE` value in the script settings.
 
-### Q: Как обработать подпапки?
-**A:** Текущая версия обрабатывает только файлы в указанной папке. Для рекурсивной обработки потребуется модификация скрипта.
+### Q: How to process subfolders?
+**A:** Current version only processes files in the specified folder. For recursive processing, script modification is required.
 
-## 🐛 Отладка
+## 🐛 Debugging
 
-### Проверка установки:
+### Installation check:
 ```bash
 python converter.py --settings
 ```
 
-### Тестовый запуск:
+### Test run:
 ```bash
-# Создайте тестовую папку с несколькими изображениями
+# Create a test folder with several images
 mkdir test_input
-cp несколько_изображений.jpg test_input/
+cp some_images.jpg test_input/
 
-# Запустите конвертацию
+# Run conversion
 python converter.py
 ```
 
+## 📞 Support
 
-## 📞 Поддержка
-
-Если у вас возникли проблемы:
-1. Проверьте установлены ли все зависимости
-2. Убедитесь в правильности путей к папкам
-3. Включите режим `--settings` для проверки конфигурации
+If you encounter problems:
+1. Check if all dependencies are installed
+2. Verify folder paths are correct
+3. Enable `--settings` mode to check configuration
 
 ---
 
-**Версия:** 3.0  
-**Последнее обновление:** 2024  
-**Поддержка Python:** 3.7+  
+**Version:** 3.0  
+**Last update:** 2024  
+**Python support:** 3.7+
