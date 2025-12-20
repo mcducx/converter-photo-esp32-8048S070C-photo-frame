@@ -1,4 +1,4 @@
-# Image Converter
+# ImageFlow
 
 ## 🖼️ Batch Image Converter with Intelligent Processing
 
@@ -40,8 +40,8 @@ Image Converter is a powerful, user-friendly desktop application for batch image
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/image-converter-pro](https://github.com/mcducx/converter-photo-esp32-8048S070C-photo-frame.git
-cd converter-photo-esp32-8048S070C-photo-frame
+git clone https://github.com/yourusername/image-converter-pro](https://github.com/mcducx/imageflow.git
+cd imageflow
 ```
 
 2. **Install required packages:**
