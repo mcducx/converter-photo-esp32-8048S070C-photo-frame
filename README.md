@@ -2,7 +2,7 @@
 
 ## 🖼️ Batch Image Converter with Intelligent Processing
 
-Image Converter is a powerful, user-friendly desktop application for batch image conversion and resizing. It supports a wide range of image formats including RAW camera files and iPhone HEIC/HEIF formats, with intelligent automatic processing mode selection.
+ImageFlow is a powerful, user-friendly desktop application for batch image conversion and resizing. It supports a wide range of image formats including RAW camera files and iPhone HEIC/HEIF formats, with intelligent automatic processing mode selection.
 
 ## ✨ Features
 
@@ -23,12 +23,6 @@ Image Converter is a powerful, user-friendly desktop application for batch image
 - **Background Colors**: Black, white, gray, or custom color
 - **File Management**: Overwrite protection and optional filename suffixes
 - **Batch Processing**: Process entire folders with one click
-
-### 🎨 Modern User Interface
-- **Dark Theme**: Clean, professional dark interface
-- **Real-time Progress**: Live progress bar and file-by-file logging
-- **Detailed Statistics**: Complete processing reports
-- **Intuitive Controls**: Easy-to-use directory selection and settings
 
 ## 📦 Installation
 
@@ -67,37 +61,6 @@ python converter.py
 *Coming soon: Windows
 *Executable files for macOS and Linux for easy installation are available in the releases(https://github.com/mcducx/imageflow/releases/tag/1.0).*
 
-## 🚀 Usage
-
-### Basic Workflow
-1. **Select Input Directory**: Choose folder containing images to convert
-2. **Select Output Directory**: Choose where to save converted images
-3. **Configure Settings**: Set resolution, quality, and processing mode
-4. **Start Processing**: Click "Start Processing" to begin batch conversion
-
-### Settings Guide
-
-#### Resolution Settings
-- **Width & Height**: Set target dimensions in pixels (default: 480×800)
-- **Aspect Ratio Display**: Shows current aspect ratio with common ratio equivalents
-
-#### Quality Settings
-- **JPEG Quality**: 95% recommended for optimal balance of quality and file size
-- **Quality Slider**: Easy adjustment from 50% (smaller files) to 100% (best quality)
-
-#### Processing Mode
-- **🤖 Auto**: Smart mode that analyzes each image's aspect ratio and chooses the best method
-- **🖼 Fit**: Preserves entire image, adds background if needed
-- **✂️ Crop**: Centers and crops to exact target dimensions
-
-#### Background Color (Fit/Auto modes only)
-- **Preset Colors**: Black, white, or gray
-- **Custom Color**: Choose any color using color picker
-
-#### File Handling
-- **Overwrite Existing**: Toggle to overwrite files in output directory
-- **Add Suffix**: Append "_converted" to output filenames
-
 ## 🔧 Supported Formats
 
 ### Input Formats
@@ -130,35 +93,11 @@ We welcome contributions! Here's how you can help:
 3. **Code Contributions**: Submit pull requests
 4. **Documentation**: Help improve documentation
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ### Third-Party Licenses
 - **PyQt5**: GPL v3 or commercial
 - **Pillow**: Historical PIL License (MIT-like)
 - **rawpy**: MIT License
 - **pillow_heif**: MIT License
-
-## 🔄 Changelog
-
-### Version 3.0
-- Added intelligent Auto mode
-- Support for RAW camera formats
-- HEIF/HEIC (iPhone) format support
-- Modern dark theme interface
-- Enhanced error handling and logging
-
-### Version 2.0
-- Multi-threaded background processing
-- Custom resolution settings
-- Quality control slider
-- Background color options
-
-### Version 1.0
-- Basic batch conversion
-- Support for common formats
-- Simple GUI interface
 
 ---
 
