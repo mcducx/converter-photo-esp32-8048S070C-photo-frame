@@ -65,7 +65,7 @@ python converter.py
 
 ### Pre-built Executables
 *Coming soon: Windows
-*Executable files for macOS and Linux for easy installation are available in the releases(https://github.com/mcducx/converter-photo-esp32-8048S070C-photo-frame/releases/tag/1.0).*
+*Executable files for macOS and Linux for easy installation are available in the releases(https://github.com/mcducx/imageflow/releases/tag/1.0).*
 
 ## 🚀 Usage
 
@@ -162,4 +162,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Image Converter** - batch image processing made simple. Convert, resize, and optimize your images with intelligent automation and extensive format support.
+**ImageFlow** - batch image processing made simple. Convert, resize, and optimize your images with intelligent automation and extensive format support.
